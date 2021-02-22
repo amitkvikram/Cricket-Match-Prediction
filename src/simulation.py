@@ -1,11 +1,18 @@
 import pandas as pd
-from preprocessing import preprocessingHelper
+from preprocessing import PreprocessingHelper
 import matplotlib.pyplot as plt
 from matplotlib import animation
 from model import get_model
+import numpy as np
+import sys
+
+def get_test_match_id():
+    test_df = pd.read_csv("./data/test_data.csv", index_col = 0)
+    print(np.unique(test_df['match-id']))
 
 def simulate(match_id):
     test_df = pd.read_csv("./data/test_data.csv", index_col = 0)
+    preprocessingHelper = PreprocessingHelper()
     test_df, test_df_c = preprocessingHelper.preprocess(test_df)
 
     match_df = (test_df[test_df['match-id'] == match_id]).reset_index()
@@ -16,8 +23,11 @@ def simulate(match_id):
     bowlingTeam = match_df_c.loc[0, 'team-bowling']
     winner = match_df_c.loc[0, 'winner']
     target = match_df_c['target-score'][0]
+    print("Simulating: {}(Batting) vs {}(Bowling)\n Target: {} \n Winner: {}".format(
+        battingTeam, bowlingTeam, target, winner))
+    print("Date: {}".format(match_df_c['date'][0]))
     
-    lstm_model = get_model()
+    lstm_model = get_model(preprocessingHelper)
     lstm_model.load_weights("weights.best.hdf5")
     p = lstm_model.predict(X)
     p_l = p.flatten().tolist()
@@ -25,7 +35,7 @@ def simulate(match_id):
     match = match_df_c
     fig=plt.figure(figsize=(12, 5))
     fig.suptitle(battingTeam + " vs " + bowlingTeam + ": " + str(match['date'][0]) +
-                 " | " + "Winner: " + match['winner'][0] + "\n", 
+                 " | " + "Winner: " + winner + "\n", 
                  fontsize=16, y=1.08)
     
     ax_1=fig.add_subplot(1,3,1)
@@ -35,7 +45,7 @@ def simulate(match_id):
     ax_1.axes.get_yaxis().set_visible(False)
     ax_1.axes.get_xaxis().set_visible(False)
     ax_1.set_frame_on(False)
-    txt= ax_1.text(0.1, 0.5,'Run-Wickets | Overs', horizontalalignment='left',verticalalignment='center',transform = ax_1.transAxes, fontsize=18, 
+    txt= ax_1.text(0.1, 0.5,'Run-Wickets | Overs', horizontalalignment='left',verticalalignment='center',transform = ax_1.transAxes, fontsize=14, 
                  bbox=dict(facecolor='white', edgecolor='white'))
     txt.set_clip_on(False)
     
@@ -55,7 +65,7 @@ def simulate(match_id):
     plt.tight_layout()
 
     def animate(i):
-        s = "Target: " + str(match['target-score'][0]) + "\n" + battingTeam + ": " + str(runsScored_l[i]) + "-" + str(wicket_l[i]) + " | " + overs_l[i]
+        s = "Target: " + str(target) + "\n" + battingTeam + ": " + str(runsScored_l[i]) + "-" + str(wicket_l[i]) + " | " + overs_l[i]
         txt.set_text(s)
                      
         h_2 = [p_l[i], 1-p_l[i]]
@@ -68,4 +78,12 @@ def simulate(match_id):
     anim=animation.FuncAnimation(fig, animate, repeat=False, blit=False,frames=len(wicket_l),
                                  interval=1000)
     
-    anim.save("simulate"+str(match_id)+".mp4",writer=animation.FFMpegWriter(fps=2))
+    anim.save("./img/simulate"+str(match_id)+".mp4",writer=animation.FFMpegWriter(fps=2))
+    
+arg = sys.argv[1]
+if arg == 'simulate':
+    match_id = int(sys.argv[2])
+    simulate(match_id)
+    
+elif arg == 'getid':
+    get_test_match_id()
