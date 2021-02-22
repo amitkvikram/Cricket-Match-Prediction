@@ -4,8 +4,7 @@ Created on Mon Feb 22 17:35:11 2021
 
 @author: Dell
 """
-
+**/**/*.pyc 
 *.csv
 **/*.csv
 .vscode
-**/*.pyc
