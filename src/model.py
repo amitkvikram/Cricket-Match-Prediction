@@ -2,7 +2,7 @@ from tensorflow.keras.layers import *
 from tensorflow.keras import *
 from tensorflow.keras.optimizers import *
 
-def get_model(prprocessingHelper):
+def get_model(preprocessingHelper):
     VOCABULARY_SIZE = len(preprocessingHelper.le.classes_) + 1
     output_dim = 2
     
@@ -16,4 +16,7 @@ def get_model(prprocessingHelper):
     L1 = LSTM(64, return_sequences=True)(C1)
     output = Dense(1, activation='sigmoid')(L1)
     lstm_model = Model(inputs=input, outputs=output)
+    lstm_model.compile(optimizer= RMSprop(learning_rate=5e-4), loss='binary_crossentropy', metrics=['acc'])
+    
+    return lstm_model
 
