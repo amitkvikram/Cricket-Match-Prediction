@@ -4,10 +4,9 @@ import os, zipfile
 import matplotlib.pyplot as plt
 import seaborn as sns
 import yaml
-from tqdm import tqdm, tqdm_notebook
+from tqdm import tqdm
 import time
 from sklearn.model_selection import train_test_split
-from keras.preprocessing.sequence import pad_sequences
 from sklearn.preprocessing import LabelEncoder
 
 data_dir_name = "./data"
@@ -18,7 +17,7 @@ filenames = list(map(lambda x:x.filename, zip_ref.filelist))
 team_match_cnt = {}
 #Create a dataframe with (filaname, date)
 file_info_list=[]
-for filename in tqdm_notebook(filenames):
+for filename in tqdm(filenames):
     if filename.endswith(".yaml"):
         with zip_ref.open(filename, 'r') as stream:
             data_loaded = yaml.load(stream)
@@ -26,7 +25,6 @@ for filename in tqdm_notebook(filenames):
             if 'result' in list(data_loaded['info']['outcome'].keys()) or 'method' in list(data_loaded['info']['outcome'].keys()):
                 continue
             date = data_loaded['info']['dates'][0]
-
             teamBatting = data_loaded['innings'][1]['2nd innings']['team']
             teamBowling = data_loaded['innings'][0]['1st innings']['team']
             if teamBatting not in team_match_cnt:

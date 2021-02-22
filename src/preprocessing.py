@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from tqdm import tqdm, tqdm_notebook
+from sklearn.preprocessing import LabelEncoder
 
 class PreprocessingHelper:
     feature_cols = ['team-batting', 'team-bowling', 'wicket-left', 'runs-scored', 'target-score', 'balls-bowled',
@@ -8,9 +9,9 @@ class PreprocessingHelper:
     max_sequence_length = 120
 
     def __init__(self):
-        train_df = pd.read_csv("./data/train_data.csv", index_col = 0)
-        val_df = pd.read_csv("./data/val_data.csv", index_col = 0)
-        test_df = pd.read_csv("./data/test_data.csv", index_col = 0)
+        train_df = pd.read_csv("../data/train_data.csv", index_col = 0)
+        val_df = pd.read_csv("../data/val_data.csv", index_col = 0)
+        test_df = pd.read_csv("../data/test_data.csv", index_col = 0)
 
         self.le = LabelEncoder()
         x = train_df['team-batting'].tolist() + train_df['team-bowling'].tolist()
