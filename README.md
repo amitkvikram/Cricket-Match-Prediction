@@ -16,10 +16,10 @@ An LSTM neural network model is used for training.
 ![](./img/acc.png)
 
 # Simulation on Test Data
-India vs Bengladesh: 2019-11-07 | Winner: India
+England(Batting) vs South Africa(Bowling): 2020-12-01 | Winner: England
 
-![](./img/simulation.gif)
+![](./img/simulate840.gif)
 
-England vs South Africa: 2020-12-01 | Winner: England
+ New Zealand(Batting) vs India(Bowling): 2020-02-02 | Winner: India
 
-![](./img/simulation1.gif)
+![](./img/simulate799.gif)
