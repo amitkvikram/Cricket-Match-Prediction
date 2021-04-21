@@ -3,7 +3,7 @@
 Predict match outcome for second inning of a T20 match. I took past T20 international matches dataset from [CRICSHEET](https://cricsheet.org/) and trained a deep neural network to give winning probability of teams after each ball of the game. 
 
 ## Dataset
-Dataset was collected from the [CRICSHEET](https://cricsheet.org/) webiste. Cricsheet provides access to ball by ball data fro men and women Test matches, ODI, T20 internationals and all IPL seasons. The data is provided in YAML format. I took data for men T20 international matches, parsed it and generated a csv file with required attributes. We can take ODI dataset and run the same model with some changes.
+Dataset was collected from the [CRICSHEET](https://cricsheet.org/) webiste. Cricsheet provides access to ball by ball data for men and women Test matches, ODI, T20 internationals and all IPL seasons. The data is provided in YAML format. I took data for men T20 international matches, parsed it and generated a csv file with required attributes. We can take ODI dataset and run the same model with some changes.
 
 ## Data Preprocessing
 For each ball in a match a feature of ['team-batting', 'team-bowling', 'wicket-left', 'runs-scored', 'target-score', 'balls-bowled',
